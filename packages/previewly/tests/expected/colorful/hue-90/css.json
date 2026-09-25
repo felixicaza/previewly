@@ -1,0 +1,6 @@
+{
+  "backgroundImage": "linear-gradient(90deg, rgb(170,163,169) 25%,rgb(204,203,205) 25% 50%,rgb(205,203,205) 50% 75%,rgb(189,188,186) 75% 100%),linear-gradient(90deg, rgb(178,151,180) 25%,rgb(205,193,206) 25% 50%,rgb(212,198,213) 50% 75%,rgb(191,159,194) 75% 100%),linear-gradient(90deg, rgb(126,105,133) 25%,rgb(119,100,129) 25% 50%,rgb(113,98,123) 50% 75%,rgb(121,96,126) 75% 100%)",
+  "backgroundPosition": "0 0%,0 50%,0 100%",
+  "backgroundSize": "100% 33.333333333333336%",
+  "backgroundRepeat": "no-repeat"
+}

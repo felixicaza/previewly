@@ -1,0 +1,66 @@
+{
+  "name": "previewly",
+  "version": "0.0.0",
+  "description": "🏞️ A lightweight, fast, multi-environment generator of beautiful low-quality image placeholders.",
+  "keywords": [
+    "lqip",
+    "placeholder",
+    "low quality",
+    "image",
+    "base64",
+    "css",
+    "svg",
+    "color"
+  ],
+  "homepage": "https://previewly.feli.cc",
+  "bugs": {
+    "url": "https://github.com/felixicaza/previewly/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felixicaza/previewly.git",
+    "directory": "packages/previewly"
+  },
+  "license": "MIT",
+  "author": "Felix Icaza <contacto@felixicaza.com>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepublishOnly": "pnpm build",
+    "start": "tsx src/index.ts",
+    "start:watch": "tsx watch src/index.ts"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "nano-staged"
+  },
+  "nano-staged": {
+    "*": "pnpm lint"
+  },
+  "devDependencies": {
+    "@napi-rs/image": "catalog:runtime",
+    "@napi-rs/image-wasm32-wasi": "catalog:runtime"
+  },
+  "peerDependencies": {
+    "@napi-rs/image": "^1.15.0",
+    "@napi-rs/image-wasm32-wasi": "^1.15.0"
+  },
+  "peerDependenciesMeta": {
+    "@napi-rs/image-wasm32-wasi": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22.23.3"
+  }
+}

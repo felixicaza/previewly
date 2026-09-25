@@ -1,0 +1,37 @@
+{
+  "name": "previewly-docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Previewly documentation",
+  "license": "MIT",
+  "author": "Felix Icaza <contacto@felixicaza.com>",
+  "type": "module",
+  "scripts": {
+    "astro": "astro",
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "start": "astro dev"
+  },
+  "dependencies": {
+    "@astrojs/markdown-satteri": "catalog:docs",
+    "@astrojs/starlight": "catalog:docs",
+    "@catppuccin/starlight": "catalog:docs",
+    "@napi-rs/image-wasm32-wasi": "catalog:runtime",
+    "@speed-highlight/core": "catalog:docs",
+    "@xtreat/astro-iconify": "catalog:docs",
+    "astro": "catalog:docs",
+    "astro-compressor": "catalog:docs",
+    "astro-html-minifier-next": "catalog:docs",
+    "buffer": "catalog:runtime",
+    "expressive-code-collapsible": "catalog:docs",
+    "previewly": "catalog:lib",
+    "satteri-external-links": "catalog:docs",
+    "starlight-llms-txt": "catalog:docs",
+    "starlight-package-managers": "catalog:docs",
+    "ts-dedent": "catalog:docs"
+  },
+  "devDependencies": {
+    "wrangler": "catalog:docs"
+  }
+}

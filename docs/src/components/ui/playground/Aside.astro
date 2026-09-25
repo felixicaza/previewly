@@ -1,0 +1,103 @@
+---
+import type { ImageMetadata } from 'astro'
+
+import { Picture } from 'astro:assets'
+import Icon from '@xtreat/astro-iconify'
+
+import { fields, testImages } from '@data/playground.ts'
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/playground/*.{jpeg,jpg,png,gif}', { eager: true })
+const resolvedImages = testImages.map(({ src, alt }) => {
+  const image = images[src]?.default
+
+  if (!image) throw new Error(`"${src}" does not exist in the image glob`)
+
+  return {
+    src: image,
+    alt
+  }
+})
+---
+
+<aside>
+  <div class="file-input">
+    <p class="title">Upload image</p>
+
+    <label class="dropzone">
+      <Icon aria-hidden="true" height={24} icon="material-symbols:upload-rounded" width={24} />
+      <span>Drop an image or click to upload</span>
+      <input accept="image/*" id="file" type="file" />
+    </label>
+
+    <section class="test-images">
+      <p>Or try an example:</p>
+
+      <div class="demos">
+        {
+          resolvedImages.map(({ src, alt }) => (
+            <button data-image={src.src} type="button">
+              <Picture alt={alt} fallbackFormat="webp" formats={['avif', 'webp']} height={50} src={src} width={50} />
+            </button>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+
+  <div class="options">
+    <details>
+      <summary>
+        <p class="title">Options</p>
+      </summary>
+      <div class="options-container">
+        <label aria-label="Placeholder size">
+          <span aria-hidden="true" class="label-container">
+            <span class="label-content">
+              <Icon height={16} icon="uil:image-resize-square" width={16} />
+              Placeholder size
+            </span>
+            <output for="size" id="sizeValue">4</output>
+          </span>
+          <input id="size" max="64" min="4" type="range" value="4" />
+        </label>
+
+        {
+          fields.map((field) => {
+            const { id, label, icon, Element, attrs } = field
+
+            return (
+              <label>
+                <span class="label-content">
+                  <Icon aria-hidden="true" height={16} icon={icon} width={16} />
+                  {label}
+                </span>
+
+                <Element id={id} {...attrs}>
+                  {field.Element === 'select' && field.options.map(({ value, label }) => <option value={value}>{label}</option>)}
+                </Element>
+              </label>
+            )
+          })
+        }
+      </div>
+    </details>
+  </div>
+
+  <button id="generate" type="button">Generate placeholder</button>
+</aside>
+
+<script is:inline>
+  const details = document.querySelector('.options > details')
+  const summary = details?.querySelector('summary')
+
+  const mediaQuery = window.matchMedia('(width >= 1200px)')
+
+  function updateDetails(isDesktop) {
+    details.open = isDesktop
+    summary.inert = isDesktop
+  }
+
+  updateDetails(mediaQuery.matches)
+
+  mediaQuery.addEventListener('change', ({ matches }) => updateDetails(matches))
+</script>

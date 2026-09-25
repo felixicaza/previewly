@@ -1,0 +1,70 @@
+---
+import StarlightSiteTitle from '@astrojs/starlight/components/SiteTitle.astro'
+
+const links = [
+  {
+    label: 'Playground',
+    slug: '/playground'
+  },
+  {
+    label: 'Docs',
+    slug: '/docs'
+  }
+]
+---
+
+<div class="site-title">
+  <StarlightSiteTitle />
+
+  <div class="separator"></div>
+
+  <ul>
+    {
+      links.map(({ label, slug }) => (
+        <li>
+          <a href={slug}>{label}</a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .site-title {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+
+    & .separator {
+      content: "";
+      width: 1px;
+      height: 32px;
+      border-inline-end: 1px solid var(--sl-color-gray-5);
+    }
+
+    & ul {
+      padding: 0px;
+      list-style-type: none;
+      display: flex;
+      gap: 22px;
+
+      & a {
+        text-decoration: none;
+        color: inherit;
+        font-weight: 500;
+        color: var(--sl-color-text-accent);
+        transition: var(--transition-color);
+
+        &:active {
+          color: var(--sl-color-white);
+        }
+
+        @media (any-hover: hover) {
+          &:hover {
+            color: var(--sl-color-white);
+          }
+        }
+      }
+    }
+  }
+</style>

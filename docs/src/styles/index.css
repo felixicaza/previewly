@@ -1,0 +1,184 @@
+@view-transition {
+  navigate: auto
+}
+
+:root {
+  --scrollbar-track-color: var(--sl-color-bg-nav);
+  --scrollbar-thumb-color: var(--sl-color-hairline-light);
+  --scrollbar-size: 5px;
+  --transition-color: color 300ms ease;
+
+  interpolate-size: allow-keywords
+}
+
+*::-webkit-scrollbar {
+  inline-size: var(--scrollbar-size);
+  block-size: var(--scrollbar-size)
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+  border-radius: 7px
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 7px
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+    scrollbar-width: thin
+  }
+}
+
+html {
+  scrollbar-gutter: stable
+}
+
+.site-title {
+  gap: 8px;
+
+  & a {
+    transition: var(--transition-color);
+
+    &:active {
+      color: var(--sl-color-white)
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--sl-color-white)
+      }
+    }
+  }
+
+  & img {
+    block-size: 26px
+  }
+}
+
+.social-icons {
+  &::after {
+    content: unset
+  }
+
+  & a svg {
+    --size: 22px;
+
+    inline-size: var(--size);
+    block-size: var(--size)
+  }
+}
+
+.sl-link-button {
+  padding: 10px 28px
+}
+
+div.hero {
+  --size: 300px;
+
+  & img {
+    inline-size: var(--size);
+    block-size: var(--size);
+    aspect-ratio: 1;
+    anchor-name: --hero-logo
+  }
+
+  &::before {
+    --initial-scale: 0.95;
+
+    position: absolute;
+    z-index: -1;
+    inline-size: 100%;
+    max-inline-size: var(--size);
+    block-size: 100%;
+    max-block-size: var(--size);
+    aspect-ratio: 1;
+    position-area: center;
+    position-anchor: --hero-logo;
+    content: "";
+    background-image: linear-gradient(140deg, #1080f9 0%, #8ed7fe 25%, #8be1ff 50%, #ffa30c 75%, #fe541b 100%);
+    border-radius: 60px;
+    opacity: 0.65;
+    filter: blur(16px);
+    scale: var(--initial-scale);
+    animation: rotate 12s linear infinite
+  }
+}
+
+@keyframes rotate {
+  0%,
+  100% {
+    scale: var(--initial-scale)
+  }
+  50% {
+    scale: 1.045
+  }
+}
+
+/* external links */
+a[href^="http"]:not(:is(.social-icons, .card-grid, .custom-footer-wrapper) a) {
+  --icon: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 32 32"%3E%3Cpath fill="%23caa6f7" d="M26 28H6a2.003 2.003 0 0 1-2-2V6a2.003 2.003 0 0 1 2-2h10v2H6v20h20V16h2v10a2.003 2.003 0 0 1-2 2"/%3E%3Cpath fill="%23caa6f7" d="M20 2v2h6.586L18 12.586L19.414 14L28 5.414V12h2V2z"/%3E%3C/svg%3E');
+  --icon-hover: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 32 32"%3E%3Cpath fill="%23cdd6f4" d="M26 28H6a2.003 2.003 0 0 1-2-2V6a2.003 2.003 0 0 1 2-2h10v2H6v20h20V16h2v10a2.003 2.003 0 0 1-2 2"/%3E%3Cpath fill="%23cdd6f4" d="M20 2v2h6.586L18 12.586L19.414 14L28 5.414V12h2V2z"/%3E%3C/svg%3E');
+
+  display: inline-flex;
+  gap: 4px;
+
+  &::after,
+  &:has(code) code::after {
+    --size: 12px;
+    --offset: calc((1.1lh - var(--size)) / 2);
+
+    flex-shrink: 0;
+    inline-size: var(--size);
+    block-size: auto;
+    aspect-ratio: 1;
+    content: "";
+    background: var(--icon);
+    background-repeat: no-repeat;
+    background-size: contain;
+    translate: 0 var(--offset)
+  }
+
+  &:active::after,
+  /* eslint-disable-next-line css/selector-complexity */
+  &:has(code):active code::after {
+    background-image: var(--icon-hover)
+  }
+
+  @media (any-hover: hover) {
+    &:hover::after,
+    /* eslint-disable-next-line css/selector-complexity */
+    &:has(code):hover code::after {
+      background-image: var(--icon-hover)
+    }
+  }
+
+  &:has(code)::after {
+    display: none
+  }
+
+  &:has(code) code::after {
+    --offset: calc((1lh - var(--size)) / 2)
+  }
+
+  & code {
+    display: inherit;
+    gap: inherit
+  }
+}
+
+/* expressive-code-collapsible */
+.ec-collapse__toggle {
+  padding: 4px 14px;
+  font-size: 12px;
+  color: inherit;
+  background-color: color-mix(in hsl, var(--sl-color-gray-5), transparent 25%)
+}
+
+.ec-collapse__gradient {
+  background:
+    linear-gradient(to bottom, transparent 0%, var(--ec-collapse-bg-color, var(--code-background, var(--sl-color-gray-7))) 100%)
+}

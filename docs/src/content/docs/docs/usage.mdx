@@ -1,0 +1,259 @@
+---
+title: Usage
+description: Generate image placeholders with Previewly in Node.js and browser applications.
+---
+import { Aside } from '@astrojs/starlight/components'
+import { Steps } from '@astrojs/starlight/components'
+
+[node]: https://nodejs.org/en/download
+
+Once [Previewly is installed](/docs/installation), generating a placeholder only takes a few lines of code. Previewly accepts image data as a [`Buffer`](https://nodejs.org/api/buffer.html) or [`Uint8Array`](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array). The setup differs slightly between [Node.js][node] and browser applications.
+
+## Setup for Node.js
+
+Make sure you are using [Node.js 22.23.3][node] or later and have installed Previewly and [`@napi-rs/image`](/docs/installation#install-for-nodejs).
+
+Read an image from disk, pass its bytes to [`getPreviewly()`](/docs/reference#getpreviewly), and use the returned placeholder:
+
+```js title="app.js"
+import { readFile } from "node:fs/promises";
+import { getPreviewly } from "previewly";
+
+const image = new URL("./image.jpg", import.meta.url);
+const imageBytes = await readFile(image);
+
+const preview = await getPreviewly(imageBytes);
+
+console.log(preview.base64);
+console.log(preview.color.hex);
+console.log(preview.metadata);
+```
+
+## Setup for the browser
+
+For browser projects, install the browser dependencies listed in the [installation guide](/docs/installation#install-for-browser-applications). This example uses a standard Vite project and a file input to generate and display a placeholder locally in the browser.
+
+<Steps>
+
+1. Configure Vite
+
+   Exclude the image packages from dependency pre-bundling and set the cross-origin isolation headers on Vite's development server:
+
+   ```js title="vite.config.js"
+   import { defineConfig } from "vite";
+
+   export default defineConfig({
+     server: {
+       headers: {
+         "Cross-Origin-Opener-Policy": "same-origin",
+         "Cross-Origin-Embedder-Policy": "require-corp",
+       },
+     },
+     optimizeDeps: {
+       exclude: ["@napi-rs/image", "@napi-rs/image-wasm32-wasi"],
+     },
+   });
+   ```
+
+   These headers are needed for browser execution that relies on shared WebAssembly memory. Configure the same headers on your production server or hosting provider; Vite's [`server.headers`](https://vite.dev/config/server-options#server-headers) setting only applies to its development server. The [`require-corp`](https://napi.rs/docs/concepts/webassembly#browser-server-configuration) policy may also affect whether cross-origin resources can be loaded by your site.
+
+2. Create the page
+
+   ```html title="index.html"
+   <!doctype html>
+   <html lang="en">
+     <head>
+       <meta charset="UTF-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       <title>Previewly browser example</title>
+     </head>
+     <body>
+       <main>
+         <h1>Generate an image placeholder</h1>
+
+         <form id="preview-form">
+           <label for="image-file">Choose an image</label>
+           <input id="image-file" type="file" accept="image/*" required />
+           <button id="generate-button" type="submit">Generate preview</button>
+         </form>
+
+         <p id="status" role="status" aria-live="polite">
+           Choose an image to get started.
+         </p>
+
+         <figure>
+           <img id="preview-image" alt="Generated low-quality image placeholder" hidden />
+           <figcaption id="image-details"></figcaption>
+         </figure>
+       </main>
+
+       <script type="module" src="/src/main.js"></script>
+     </body>
+   </html>
+   ```
+
+3. Add and initialize the [`Buffer`](https://github.com/feross/buffer) polyfill, and generate a preview
+
+   Previewly needs the polyfill when processing image data. Initialize it before importing Previewly. The dynamic import below ensures this ordering is preserved:
+
+   ```js title="main.js"
+   import { Buffer } from "buffer";
+
+   globalThis.Buffer ??= Buffer;
+
+   const form = document.querySelector("#preview-form");
+   const fileInput = document.querySelector("#image-file");
+   const generateButton = document.querySelector("#generate-button");
+   const status = document.querySelector("#status");
+   const previewImage = document.querySelector("#preview-image");
+   const imageDetails = document.querySelector("#image-details");
+
+   form.addEventListener("submit", async (event) => {
+     event.preventDefault();
+
+     const file = fileInput.files?.[0];
+     if (!file) return;
+
+     generateButton.disabled = true;
+     status.textContent = "Generating preview...";
+     imageDetails.textContent = "";
+
+     try {
+       const { getPreviewly } = await import("previewly");
+       const imageBytes = new Uint8Array(await file.arrayBuffer());
+       const preview = await getPreviewly(imageBytes);
+
+       previewImage.src = preview.base64;
+       previewImage.hidden = false;
+       imageDetails.textContent = `${preview.metadata.width} × ${preview.metadata.height} · ${preview.color.hex}`;
+       status.textContent = "Preview generated.";
+     } catch (error) {
+       previewImage.removeAttribute("src");
+       previewImage.hidden = true;
+       status.textContent = error instanceof Error ? error.message : "Could not generate the preview.";
+     } finally {
+       generateButton.disabled = false;
+     }
+   });
+   ```
+</Steps>
+
+Start the Vite development server, open the local URL it displays, choose an image, and select **Generate preview**. The image bytes are processed in the browser; this example does not upload them to a server.
+
+<Aside type="tip" title="Try it in the playground!">
+  Experiment directly in the playground, make changes, and see the results in real time. [Open the playground and start generating!](/playground)
+</Aside>
+
+## Understanding the output
+
+Calling [`getPreviewly()`](/docs/reference#getpreviewly) returns several representations of the generated placeholder.
+
+### `base64`
+
+A Base64-encoded data URL that can be used directly as the `src` of an `<img>` element.
+
+```ts title="app.js"
+imageElement.src = preview.base64;
+```
+
+### `css`
+
+A CSS representation of the placeholder that recreates the image using gradients. This is useful when you want to render placeholders without additional image requests.
+
+```ts title="app.js"
+element.style.background = preview.css.backgroundImage;
+```
+
+### `svg`
+
+An SVG object describing the generated placeholder. This format is lightweight, scalable, and works particularly well when serialized and embedded into the page.
+
+```js title="app.js"
+import { serializeSVG } from "previewly";
+
+const svgMarkup = serializeSVG(preview.svg);
+const svg = `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgMarkup)}")`;
+
+element.style.background = svg;
+```
+
+### `color`
+
+The dominant color extracted from the image. This is perfect for simple color placeholders or loading skeletons.
+
+```ts title="app.js"
+element.style.background = preview.color.hex;
+```
+
+## Serializing the SVG
+
+If you prefer working with a serialized SVG string, Previewly provides the [`serializeSVG()`](/docs/reference#serializesvg) helper.
+
+```ts title="app.js"
+import { readFile } from "node:fs/promises";
+import { getPreviewly, serializeSVG } from "previewly";
+
+const image = new URL("./image.jpg", import.meta.url);
+const buffer = await readFile(image);
+
+const previewly = await getPreviewly(buffer);
+
+const svg = serializeSVG(previewly.svg);
+
+console.log(svg);
+```
+
+### When should I use `serializeSVG()`?
+
+You only need this helper if you want to work with the SVG representation as a string.
+
+If you're using the other outputs returned by [`getPreviewly()`](/docs/reference#getpreviewly) (such as [`base64`](/docs/reference#base64), [`css`](/docs/reference#css), or [`color`](/docs/reference#color)) there's no need to call [`serializeSVG()`](/docs/reference#serializesvg).
+
+A common workflow is:
+
+1. Generate a placeholder with [`getPreviewly()`](/docs/reference#getpreviewly).
+2. Access the [`svg`](/docs/reference#svg) property.
+3. Serialize it using [`serializeSVG()`](/docs/reference#serializesvg).
+4. Embed the resulting string wherever an SVG is required.
+
+## Customizing the output
+
+Previewly includes several options that allow you to control how placeholders are generated. For example, you can change the placeholder size, output format, brightness, saturation, orientation handling, and more.
+
+```ts title="app.js" nocollapse
+import { readFile } from "node:fs/promises";
+import { getPreviewly } from "previewly";
+
+const image = new URL("./image.jpg", import.meta.url);
+const buffer = await readFile(image);
+
+const previewly = await getPreviewly(buffer, {
+  autoOrient: true,
+  size: 12,
+  format: "webp",
+  brightness: 2,
+  saturation: 1.7,
+  hue: 50,
+  removeAlpha: true,
+  getExif: true,
+});
+```
+
+Every option is documented in detail in the [**API Reference**](/docs/reference).
+
+## Common workflow
+
+A typical integration looks like this:
+
+1. Read or receive an image.
+2. Generate a placeholder with [`getPreviewly()`](/docs/reference#getpreviewly).
+3. Render the placeholder immediately.
+4. Replace it with the full-resolution image once it finishes loading.
+
+This approach creates a much smoother loading experience, especially on slower connections or when displaying large images.
+
+## Next steps
+
+Now that you've generated your first placeholder, head over to the [**API Reference**](/docs/reference) to explore every available option and return type in detail.
+
+Or see the [**Choosing a Placeholder**](/docs/placeholder) to select the best option based on your needs.

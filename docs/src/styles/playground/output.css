@@ -1,0 +1,107 @@
+/* eslint-disable css/no-important */
+
+@scope (.playground) {
+  .output {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+
+    & header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      & button {
+        margin-block-start: unset
+      }
+    }
+
+    & .output-content {
+      display: inherit;
+      flex-grow: 1;
+      flex-direction: inherit;
+      gap: 16px;
+      margin-block-start: unset;
+
+      & .tabs {
+        display: inherit;
+        gap: 8px;
+        padding-block-end: 6px;
+        margin-block-start: unset;
+        overflow-inline: auto;
+
+        @media (width >= 514px) {
+          padding-block-end: unset;
+          border-block-end: 1px solid var(--sl-color-gray-5)
+        }
+
+        & button {
+          padding: 4px 12px;
+          margin-block-start: unset;
+          color: inherit;
+          cursor: pointer;
+          background: transparent;
+          border: none;
+          border-block-end: 2px solid transparent;
+
+          &.is-active {
+            color: var(--sl-color-accent);
+            border-block-end-color: var(--sl-color-accent)
+          }
+        }
+      }
+
+      & .panels {
+        flex-grow: 1;
+        margin-block-start: unset;
+
+        & section {
+          --spacing: 16px;
+
+          position: relative;
+          block-size: 100%;
+          margin-block-start: inherit;
+
+          @media (any-hover: hover) {
+            &:hover button {
+              opacity: 1
+            }
+          }
+
+          & button {
+            position: absolute;
+            inset-block-start: 0px;
+            inset-inline-end: 0px;
+            padding: 1px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            background: color-mix(in oklch, var(--sl-color-gray-4), transparent 50%);
+            border: none;
+            border-radius: 4px;
+            opacity: 0;
+            backdrop-filter: blur(4px);
+            translate: calc(var(--spacing) * -1) var(--spacing);
+            transition: opacity 200ms ease
+          }
+
+          & pre {
+            block-size: inherit;
+            max-block-size: 353px;
+            padding: var(--spacing) !important;
+            margin: unset !important;
+            overflow: auto;
+            overflow-wrap: anywhere !important;
+            white-space: pre-wrap !important;
+            background: transparent !important;
+            border-radius: 8px !important;
+
+            & div {
+              margin-block-start: unset
+            }
+          }
+        }
+      }
+    }
+  }
+}

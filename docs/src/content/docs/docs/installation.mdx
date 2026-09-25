@@ -1,0 +1,62 @@
+---
+title: Installation
+description: Install Previewly for Node.js and browser applications.
+---
+import { Aside } from '@astrojs/starlight/components'
+import { PackageManagers } from 'starlight-package-managers'
+
+[node]: https://nodejs.org/en/download
+[buffer]: https://github.com/feross/buffer
+[napi-website]: https://image.napi.rs/
+[napi-package]: https://npmx.dev/package/@napi-rs/image
+[napi-package-wasi]: https://npmx.dev/package/@napi-rs/image-wasm32-wasi
+
+Previewly is distributed through the npm registry and can be installed with any modern JavaScript package manager.
+
+## Runtime support
+
+### Node.js
+
+<Aside>
+  Previewly requires **Node.js 22.23.3 or later**.
+</Aside>
+
+[Node.js][node] is the only JavaScript runtime with which Previewly has been tested. Deno, Bun, and other runtimes have not been tested yet.
+
+### Browser
+
+Previewly can also be used in browser applications through a WebAssembly binary. Browser projects need a compatible bundler and the browser-specific dependencies listed below.
+
+## Install for Node.js
+
+Install Previewly and its required peer dependency, [`@napi-rs/image`][napi-package]:
+
+<PackageManagers pkg="@napi-rs/image previewly" pkgManagers={['npm', 'pnpm', 'yarn', 'bun']} />
+
+## Install for browser applications
+
+Install Previewly, its required peer dependency [`@napi-rs/image`][napi-package], the WebAssembly package [`@napi-rs/image-wasm32-wasi`][napi-package-wasi], and the [`Buffer`][buffer] polyfill:
+
+<PackageManagers pkg="@napi-rs/image @napi-rs/image-wasm32-wasi buffer previewly" pkgManagers={['npm', 'pnpm', 'yarn', 'bun']} />
+
+<Aside type="caution">Bun is listed as a package manager above. This does not mean Previewly has been tested with Bun as a runtime.</Aside>
+
+## Why are these packages installed separately?
+
+Previewly uses [`@napi-rs/image`][napi-website] to decode and process images. It is a required peer dependency, so your project must provide it instead of Previewly bundling its own copy.
+
+For browser applications, [`@napi-rs/image-wasm32-wasi`][napi-package-wasi] provides the WebAssembly binary, and the [`Buffer`][buffer] package provides the polyfill required by browser code. Keeping the image package as a peer dependency also lets your project control its version and helps avoid duplicate copies of its native binaries when other dependencies use the same package.
+
+## Verify your installation
+
+For Node.js projects, check that the version is 22.23.3 or later:
+
+```sh title="Terminal"
+node --version
+```
+
+For browser projects, follow the [browser setup guide](/docs/usage#browser-with-vite) to configure Vite and initialize the `Buffer` polyfill.
+
+## Next steps
+
+Continue to the [**Usage**](/docs/usage) guide to generate your first low-quality image placeholder.

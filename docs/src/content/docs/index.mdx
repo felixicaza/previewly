@@ -1,0 +1,48 @@
+---
+template: splash
+title: Previewly
+description: A lightweight, fast, multi-environment generator of beautiful low-quality image placeholders.
+head:
+  - tag: title
+    content: Beautiful Low-Quality Image Placeholder Generator | Previewly
+  - tag: meta
+    attrs:
+      property: og:title
+      content: Beautiful Low-Quality Image Placeholder Generator
+hero:
+  tagline: A lightweight, fast, multi-environment generator of beautiful low-quality image placeholders.
+  image:
+    file: ../../assets/logo.png
+    alt: Previewly (Low-Quality Image Placeholder Generator)
+  actions:
+    - text: Playground
+      link: /playground
+      icon: right-arrow
+    - text: Getting started
+      link: /docs/installation
+      icon: right-caret
+      variant: minimal
+---
+
+import { CardGrid } from '@astrojs/starlight/components'
+import Card from '../../components/ui/Card.astro'
+
+## Features
+
+<CardGrid stagger>
+  <Card title="Multiple placeholder formats" icon="uil:image-resize-landscape">
+    Generates low-quality image placeholders (LQIP) in multiple formats, including Base64, CSS, SVG and color.
+  </Card>
+  <Card title="Broad image format support" icon="material-symbols:photo-library-outline-rounded">
+    Supports decoding a wide range of image formats, with configurable output encoding. See [@napi-rs/image supported formats](https://image.napi.rs/docs#supported-formats).
+  </Card>
+  <Card title="Cross-platform compatibility" icon="mage:box-3d-check">
+    Supports multiple environments, including server and browser.
+  </Card>
+  <Card title="High performance" icon="ic:baseline-speed">
+    Optimized for performance and speed, making it suitable for production use.
+  </Card>
+  <Card title="Simple API" icon="ant-design:api-outlined">
+    Provides a simple and intuitive API for generating placeholders.
+  </Card>
+</CardGrid>

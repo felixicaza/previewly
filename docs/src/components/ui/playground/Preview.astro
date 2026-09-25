@@ -1,0 +1,64 @@
+---
+import Icon from '@xtreat/astro-iconify'
+---
+
+<div class="preview">
+  <section class="before">
+    <div class="original" />
+  </section>
+
+  <section class="after">
+    <div class="placeholder" id="placeholder" />
+  </section>
+
+  <input id="range" step="0.1" type="range" value="50">
+
+  <div aria-label="Controles de zoom" class="zoom-controls">
+    <button aria-label="Zoom out" class="zoom-out" type="button">
+      <Icon aria-hidden="true" height={20} icon="ic:round-zoom-out" width={20} />
+    </button>
+    <output class="zoom-value">100%</output>
+    <button aria-label="Zoom in" class="zoom-in" type="button">
+      <Icon aria-hidden="true" height={20} icon="ic:round-zoom-in" width={20} />
+    </button>
+  </div>
+</div>
+
+<script>
+  const preview = document.querySelector('.preview') as HTMLDivElement
+  const range = preview.querySelector('#range') as HTMLInputElement
+  const zoomIn = preview.querySelector('.zoom-in') as HTMLButtonElement
+  const zoomOut = preview.querySelector('.zoom-out') as HTMLButtonElement
+  const zoomValue = preview.querySelector('.zoom-value') as HTMLOutputElement
+
+  const MIN_ZOOM = 0.5
+  const DEFAULT_ZOOM = 1
+  const MAX_ZOOM = 2
+  const ZOOM_STEP = 0.10
+
+  let zoom = DEFAULT_ZOOM
+
+  range?.addEventListener('input', () => {
+    preview.style.setProperty('--pos', `${range.value}%`)
+  })
+
+  function updateZoom(nextZoom: number) {
+    zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoom))
+
+    preview.style.setProperty('--zoom', String(zoom))
+
+    if (zoomValue) zoomValue.value = `${Math.round(zoom * 100)}%`
+    if (zoomIn) zoomIn.disabled = zoom >= MAX_ZOOM
+    if (zoomOut) zoomOut.disabled = zoom <= MIN_ZOOM
+  }
+
+  zoomIn?.addEventListener('click', () => {
+    updateZoom(zoom + ZOOM_STEP)
+  })
+
+  zoomOut?.addEventListener('click', () => {
+    updateZoom(zoom - ZOOM_STEP)
+  })
+
+  updateZoom(DEFAULT_ZOOM)
+</script>

@@ -1,0 +1,73 @@
+@scope (.playground) {
+  aside,
+  .preview,
+  .output {
+    margin-block-start: 0px;
+    background: hsl(240, 20%, 17%);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 16px
+  }
+
+  .preview,
+  .output {
+    padding: 16px
+  }
+
+  .title {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-weight: bold;
+    counter-increment: title;
+
+    &::before {
+      --size: 28px;
+
+      display: inline-grid;
+      place-items: center;
+      inline-size: var(--size);
+      block-size: var(--size);
+      content: counter(title);
+      background-color: var(--sl-color-purple-low);
+      border-radius: 50%
+    }
+  }
+
+  input[role="switch"] {
+    position: relative;
+    inline-size: 50px;
+    block-size: 26px;
+    color: inherit;
+    appearance: none;
+    cursor: pointer;
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 1000px;
+    isolation: isolate;
+    transition: border-color 300ms cubic-bezier(0, 0, 0.2, 1);
+
+    &::before {
+      --size: 16px;
+
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 0px;
+      inline-size: var(--size);
+      block-size: var(--size);
+      margin: 0px 2px;
+      content: "";
+      background: var(--sl-color-gray-4);
+      border-radius: 50%;
+      translate: 2px -50%;
+      transition: translate 300ms cubic-bezier(0, 0, 0.2, 1)
+    }
+
+    &:checked {
+      border-color: currentColor;
+
+      &::before {
+        background: currentColor;
+        translate: 26px -50%
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+@scope (.playground) {
+  .preview {
+    position: relative;
+    display: inherit;
+    block-size: 486px;
+    isolation: isolate;
+
+    & > * {
+      grid-area: 1 / 1
+    }
+
+    & section {
+      display: inherit;
+      place-content: center;
+      margin-block-start: 0px;
+      container-type: size;
+      overflow: clip;
+      border: 1px dashed var(--sl-color-gray-4);
+      border-radius: 8px
+    }
+
+    & .original,
+    & .placeholder {
+      inline-size: 100cqi;
+      block-size: 100cqb;
+      background: var(--background);
+      /* background-size: var(--background-size, contain); */
+      /* background-position: var(--background-position, center); */
+      /* background-repeat: var(--background-repeat, no-repeat); */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      border-radius: 4px;
+      transform-origin: center;
+      scale: var(--zoom, 1)
+    }
+
+    & .before {
+      mask: linear-gradient(to right, #000 0, var(--pos, 50%), #0000 0)
+    }
+
+    & .after {
+      mask: linear-gradient(to right, #0000 0, var(--pos, 50%), #000 0)
+    }
+
+    & input[type="range"] {
+      z-index: 1;
+      container-type: size;
+      appearance: none;
+      cursor: pointer;
+      background: transparent;
+      -webkit-tap-highlight-color: transparent;
+
+      &:hover + .zoom-controls {
+        opacity: 1
+      }
+
+      &::-webkit-slider-thumb {
+        inline-size: 4px;
+        block-size: 100cqb;
+        appearance: none;
+        background-color: var(--sl-color-text)
+      }
+
+      &::-moz-range-thumb {
+        inline-size: 4px;
+        block-size: 100cqb;
+        appearance: none;
+        background-color: var(--sl-color-text)
+      }
+    }
+
+    & .zoom-controls {
+      --size: fit-content;
+
+      position: absolute;
+      inset-block-start: 0px;
+      inset-inline-end: 0px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      inline-size: var(--size);
+      block-size: var(--size);
+      padding: 1px 6px;
+      font-size: 15px;
+      background: color-mix(in oklch, var(--sl-color-gray-4), transparent 50%);
+      border-radius: 4px;
+      opacity: 0;
+      backdrop-filter: blur(4px);
+      translate: -32px 14px;
+      transition: opacity 300ms ease;
+
+      /* Fixes where it hides when hovered over itself. */
+      &:hover {
+        opacity: 1
+      }
+
+      & button {
+        --background-hover: color-mix(in oklch, var(--sl-color-gray-4), transparent 60%);
+
+        padding: 0px;
+        padding: 1px;
+        margin-block-start: 0px;
+        color: currentColor;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        border-radius: inherit;
+        transition: background 300ms ease;
+
+        &:active {
+          background: var(--background-hover)
+        }
+
+        @media (any-hover: hover) {
+          &:hover {
+            background: var(--background-hover)
+          }
+        }
+      }
+
+      & output {
+        display: inline-block;
+        margin-block-start: 0px
+      }
+    }
+  }
+}

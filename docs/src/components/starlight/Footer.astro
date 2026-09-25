@@ -1,0 +1,30 @@
+---
+import StarlightFooter from '@astrojs/starlight/components/Footer.astro';
+---
+
+<div class="custom-footer-wrapper">
+  { Astro.url.pathname !== '/' && <StarlightFooter /> }
+
+  <p class="custom-content">
+    Made with ❤️ by&nbsp;
+    <a href="https://feli.cc">Felix Icaza</a>
+  </p>
+</div>
+
+<style>
+  .custom-footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+
+    & .custom-content {
+      text-align: center;
+      font-size: var(--sl-text-md);
+      color: var(--sl-color-gray-3);
+
+      & a {
+        color: var(--sl-color-text-accent);
+      }
+    }
+  }
+</style>

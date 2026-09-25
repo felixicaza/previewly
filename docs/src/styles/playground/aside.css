@@ -1,0 +1,270 @@
+@scope (.playground) {
+  aside {
+    display: flex;
+    flex-direction: column;
+    grid-row: span 2 / span 2;
+
+    & .file-input {
+      display: inherit;
+      flex-direction: inherit;
+      gap: 16px;
+      padding: 16px;
+      padding-block-end: 22px;
+      border-block-end: 1px solid var(--sl-color-gray-5);
+
+      & label {
+        --active-background: hsl(240, 21%, 16%);
+        --active-border-color: hsl(251, 60%, 70%);
+
+        display: inherit;
+        gap: 6px;
+        align-items: center;
+        justify-content: center;
+        padding: 36px 16px;
+        margin-block-start: unset;
+        cursor: pointer;
+        border: 1px dashed var(--sl-color-gray-4);
+        border-radius: 8px;
+        transition: border-color 150ms ease, background-color 150ms ease;
+
+        &.dragging {
+          background: hsla(266, 100%, 70%, 0.09);
+          border-color: hsl(263, 100%, 70%)
+        }
+
+        &:active {
+          background: var(--active-background);
+          border-color: var(--active-border-color)
+        }
+
+        @media (any-hover: hover) {
+          &:hover {
+            background: var(--active-background);
+            border-color: var(--active-border-color)
+          }
+        }
+
+        & input {
+          display: none
+        }
+      }
+
+      & .test-images {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-block-start: unset;
+
+        & .demos {
+          display: inherit;
+          gap: 12px;
+          margin-block-start: inherit;
+
+          & button {
+            padding: unset;
+            margin: unset;
+            cursor: pointer;
+            background: unset;
+            border: unset;
+
+            & img {
+              aspect-ratio: 1;
+              margin-block-start: inherit;
+              object-fit: cover;
+              border-radius: 4px
+            }
+          }
+        }
+      }
+    }
+
+    & .options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+      margin-block-start: unset;
+
+      & details {
+        --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23cdd6f4' d='M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7z'/%3E%3C/svg%3E");
+
+        padding: 0px;
+        border: none;
+
+        &::details-content {
+          block-size: 0px;
+          overflow-block: clip;
+          opacity: 0;
+          transition:
+            height 200ms ease, opacity 50ms ease, content-visibility 250ms ease allow-discrete
+        }
+
+        &[open] {
+          &::details-content {
+            block-size: auto;
+            opacity: 1
+          }
+
+          & summary::after {
+            content: var(--icon);
+            rotate: 90deg;
+
+            @media (width >= 1200px) {
+              content: none
+            }
+          }
+        }
+
+        & summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          &::before {
+            content: unset
+          }
+
+          &::after {
+            --size: 26px;
+
+            inline-size: var(--size);
+            block-size: var(--size);
+            content: var(--icon);
+            translate: 6px 0px;
+            transition: rotate 300ms ease
+          }
+        }
+      }
+
+      & .options-container {
+        --gap: 18px;
+
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+        margin-block-start: unset;
+
+        & label {
+          display: inherit;
+          flex-direction: inherit;
+          gap: 4px;
+          margin-block-start: 0px;
+
+          &:has(input[type="checkbox"]) {
+            flex-direction: row;
+            gap: unset;
+            justify-content: space-between
+          }
+
+          &:has(#autoOrient) {
+            padding-block-start: var(--gap);
+            border-block-start: 1px solid var(--sl-color-gray-5)
+          }
+
+          & select,
+          & input:not(input[type="range"], input[type="checkbox"]) {
+            padding: 4px 8px;
+            background: inherit;
+            border: 1px solid var(--sl-color-gray-4);
+            border-radius: 4px;
+
+            &:focus {
+              outline: none;
+              background: hsl(240, 21%, 16%)
+            }
+          }
+
+          & input[type=range] {
+            --radius: 20px;
+
+            appearance: none;
+            background: transparent;
+            border-radius: var(--radius);
+
+            &::-webkit-slider-runnable-track {
+              block-size: 10px;
+              background: var(--sl-color-gray-4);
+              border-radius: var(--radius)
+            }
+
+            &::-moz-range-track {
+              block-size: 10px;
+              background: var(--sl-color-gray-4);
+              border-radius: var(--radius)
+            }
+
+            &::-webkit-slider-thumb {
+              --size: 20px;
+
+              inline-size: var(--size);
+              block-size: var(--size);
+              appearance: none;
+              background: var(--sl-color-accent);
+              border: 2px solid currentColor;
+              border-radius: 50%;
+              translate: 0px -5px
+            }
+
+            &::-moz-range-thumb {
+              --size: 18px;
+
+              inline-size: var(--size);
+              block-size: var(--size);
+              appearance: none;
+              background: var(--sl-color-accent);
+              border: 2px solid currentColor;
+              border-radius: 50%
+            }
+          }
+
+          & select {
+            padding-block: 6px
+          }
+
+          & .label-container {
+            display: inherit;
+            justify-content: space-between;
+
+            &:has(+ input[type="range"]) {
+              margin-block-end: 8px
+            }
+          }
+
+          & .label-content {
+            display: inherit;
+            gap: 6px;
+            align-items: center
+          }
+        }
+      }
+    }
+
+    & #generate {
+      --hover-color: color-mix(in hsl, var(--sl-color-accent), hsl(0, 0%, 0%) 12%);
+
+      padding: 8px 16px;
+      margin: 16px;
+      margin-block-start: 24px;
+      cursor: pointer;
+      background: var(--sl-color-accent);
+      border: none;
+      border-radius: 6px;
+      transition: background 200ms ease;
+
+      &[disabled] {
+        cursor: not-allowed;
+        opacity: 0.5
+      }
+
+      &:active {
+        background: var(--hover-color)
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          background: var(--hover-color)
+        }
+      }
+    }
+  }
+}

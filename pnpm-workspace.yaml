@@ -1,0 +1,85 @@
+packages:
+   - packages/*
+   - docs
+
+minimumReleaseAgeExclude:
+   - "@felixicaza/eslint-config"
+   - "@felixicaza/oxlint-config"
+   - "@felixicaza/tsdown-config"
+
+allowBuilds:
+   esbuild: true
+   simple-git-hooks: true
+   workerd: true
+
+saveExact: true
+blockExoticSubdeps: true
+autoInstallPeers: false
+minimumReleaseAge: 2880
+trustPolicy: no-downgrade
+strictPeerDependencies: true
+strictDepBuilds: true
+dedupePeers: true
+shellEmulator: true
+color: always
+
+publicHoistPattern:
+   - eslint-plugin-jsx-a11y-x
+
+trustPolicyExclude:
+   - why-is-node-running@3.2.2
+
+catalogs:
+   build:
+      "@felixicaza/tsdown-config": 0.1.4
+      tsdown: 0.22.14
+
+   docs:
+      "@astrojs/markdown-satteri": 0.4.2
+      "@astrojs/starlight": 0.42.4
+      "@catppuccin/starlight": 2.1.0
+      "@speed-highlight/core": 2.1.0
+      "@xtreat/astro-iconify": 1.2.7
+      astro: 7.3.5
+      astro-compressor: 2.0.1
+      astro-html-minifier-next: 5.1.0
+      expressive-code-collapsible: 1.0.0
+      satteri-external-links: 0.1.1
+      starlight-llms-txt: 0.12.0
+      starlight-package-managers: 0.13.0
+      ts-dedent: 2.3.0
+      wrangler: 4.140.0
+
+   lib:
+      previewly: "workspace:*"
+
+   lint:
+      "@felixicaza/eslint-config": 1.0.1
+      "@felixicaza/oxlint-config": 1.0.0
+      "@typescript-eslint/parser": 8.70.1
+      eslint: 10.11.0
+      oxlint: 1.85.0
+      oxlint-tsgolint: 7.0.2003
+
+   precommit:
+      nano-staged: 1.0.2
+      simple-git-hooks: 2.14.0
+
+   releasing:
+      bumpp: 12.3.0
+
+   runtime:
+      "@napi-rs/image": 1.15.0
+      "@napi-rs/image-wasm32-wasi": 1.15.0
+      buffer: 6.0.3
+
+   testing:
+      vitest: 5.0.2
+
+   tooling:
+      tsx: 4.23.15
+      turbo: 2.11.4
+
+   types:
+      "@types/node": 26.6.2
+      typescript: 6.0.3

@@ -1,0 +1,39 @@
+---
+import { tabs, panels } from '@data/playground.ts'
+---
+
+<section class="output">
+  <header>
+    <p class="title">Output</p>
+  </header>
+
+  <div class="output-content">
+    <div aria-label="Generated output" class="tabs" role="tablist">
+      {
+        tabs.map(({ id, label, active }) => (
+          <button
+            aria-controls={`panel-${id}`}
+            aria-selected={active}
+            class:list={['tab', { 'is-active': active }]}
+            data-tab={id}
+            role="tab"
+            type="button"
+          >
+            {label}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="panels">
+      {
+        panels.map(({ type, active }) => (
+          <section class:list={['panel', { 'is-active': active }]} data-panel={type} hidden={!active} id={type} role="tabpanel">
+            <button class="copy" type="button">Copy</button>
+            <pre>Upload an image to start.</pre>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</section>

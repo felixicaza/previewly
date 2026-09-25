@@ -1,0 +1,57 @@
+{
+  "name": "@felixicaza/previewly",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Low Quality Image Placeholder Generator",
+  "license": "MIT",
+  "author": "Felix Icaza <contacto@felixicaza.com>",
+  "type": "module",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "oxlint . && eslint --flag unstable_native_nodejs_ts_config . --cache",
+    "lint:fix": "oxlint . --fix --fix-suggestions --fix-dangerously && eslint --flag unstable_native_nodejs_ts_config . --cache --fix",
+    "prepare": "simple-git-hooks",
+    "prepublishOnly": "pnpm build",
+    "preview": "turbo preview",
+    "release": "pnpm -C packages/previewly exec bumpp --tag \"previewly@%s\" --commit \"release(previewly): %s\" --no-push",
+    "start": "turbo start",
+    "start:watch": "turbo start:watch",
+    "test": "vitest",
+    "test:update": "vitest --update",
+    "typecheck": "oxlint . --type-aware --type-check"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm nano-staged"
+  },
+  "nano-staged": {
+    "*": [
+      "pnpm lint:fix",
+      "pnpm typecheck"
+    ]
+  },
+  "devDependencies": {
+    "@felixicaza/eslint-config": "catalog:lint",
+    "@felixicaza/oxlint-config": "catalog:lint",
+    "@felixicaza/tsdown-config": "catalog:build",
+    "@types/node": "catalog:types",
+    "@typescript-eslint/parser": "catalog:lint",
+    "bumpp": "catalog:releasing",
+    "eslint": "catalog:lint",
+    "nano-staged": "catalog:precommit",
+    "oxlint": "catalog:lint",
+    "oxlint-tsgolint": "catalog:lint",
+    "simple-git-hooks": "catalog:precommit",
+    "tsdown": "catalog:build",
+    "tsx": "catalog:tooling",
+    "turbo": "catalog:tooling",
+    "typescript": "catalog:types",
+    "vitest": "catalog:testing"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.6.0"
+    }
+  }
+}
