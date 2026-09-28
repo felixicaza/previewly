@@ -24,7 +24,7 @@ Whether you're building a portfolio, an e-commerce platform, a blog, or any imag
 
 Some of its key advantages include:
 
-- Fast placeholder generation optimized for production workloads.
+- [Fast placeholder generation](/docs/benchmark) optimized for production workloads.
 - Support for a wide range of image formats through [`@napi-rs/image`](https://image.napi.rs/).
 - Runs in both server and browser environments.
 - Small, intuitive API with sensible defaults.

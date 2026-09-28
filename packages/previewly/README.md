@@ -86,6 +86,22 @@ See the [Usage Guide](https://previewly.feli.cc/docs/usage) for examples of gene
 
 See the [API Reference](https://previewly.feli.cc/docs/reference#getpreviewly) for all options, defaults, and types.
 
+## ⚡ Performance
+
+[Previewly][website] was benchmarked against [`plaiceholder`](https://github.com/joe-bell/plaiceholder) using the same input images and 100 samples per case.
+
+| Image | Size | Previewly | Plaiceholder | Speedup |
+| --- | ---: | ---: | ---: | ---: |
+| [`landscape-exif.jpg`][fixtures] | 339.19 KiB | ~73 ms | ~120 ms | **1.6×** |
+| [`pexels-fabianwiktor-3470872.jpg`][fixtures] | 798.19 KiB | ~594 ms | ~866 ms | **1.5×** |
+| [`portrait-exif.jpg`][fixtures] | 239.93 KiB | ~59 ms | ~122 ms | **2.1×** |
+| [`transparent.png`][fixtures] | 2.03 MiB | ~61 ms | ~318 ms | **5.2×** |
+
+Average results show that [Previewly][website] provides lower latency and higher throughput across all tested images.
+
+> [!NOTE]
+> Results may vary depending on hardware, runtime version and image characteristics. See full technical results in [benchmark folder](https://github.com/felixicaza/previewly/tree/main/benchmark).
+
 ## 🏆 Credits
 
 This project is highly inspired by [@joe-bell/plaiceholder](https://github.com/joe-bell/plaiceholder).
@@ -119,3 +135,4 @@ This project is licensed under the MIT License. See the [LICENSE](https://github
 
 [website]: https://previewly.feli.cc/
 [package]: https://npmx.dev/package/previewly
+[fixtures]: https://github.com/felixicaza/previewly/tree/main/packages/previewly/tests/fixtures

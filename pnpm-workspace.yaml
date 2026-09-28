@@ -30,6 +30,11 @@ trustPolicyExclude:
    - why-is-node-running@3.2.2
 
 catalogs:
+   benchmark:
+      plaiceholder: 3.0.0
+      sharp: 0.35.4
+      tinybench: 6.2.0
+
    build:
       "@felixicaza/tsdown-config": 0.1.4
       tsdown: 0.22.14

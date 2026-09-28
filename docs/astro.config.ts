@@ -114,6 +114,7 @@ export default defineConfig({
           label: 'Guides',
           items: [
             'docs/placeholder',
+            'docs/benchmark',
             'docs/resources'
           ]
         },
