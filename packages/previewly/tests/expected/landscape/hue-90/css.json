@@ -1,5 +1,5 @@
 {
-  "backgroundImage": "linear-gradient(90deg, rgb(242,178,224) 25%,rgb(239,171,221) 25% 50%,rgb(197,136,182) 50% 75%,rgb(94,75,88) 75% 100%),linear-gradient(90deg, rgb(157,121,151) 25%,rgb(118,91,116) 25% 50%,rgb(101,84,96) 50% 75%,rgb(86,85,83) 75% 100%),linear-gradient(90deg, rgb(94,83,99) 25%,rgb(78,67,78) 25% 50%,rgb(166,121,155) 50% 75%,rgb(64,51,59) 75% 100%)",
+  "backgroundImage": "linear-gradient(90deg, rgba(242,178,224,1) 25%,rgba(239,171,221,1) 25% 50%,rgba(197,136,182,1) 50% 75%,rgba(94,75,88,1) 75% 100%),linear-gradient(90deg, rgba(157,121,151,1) 25%,rgba(118,91,116,1) 25% 50%,rgba(101,84,96,1) 50% 75%,rgba(86,85,83,1) 75% 100%),linear-gradient(90deg, rgba(94,83,99,1) 25%,rgba(78,67,78,1) 25% 50%,rgba(166,121,155,1) 50% 75%,rgba(63,51,59,1) 75% 100%)",
   "backgroundPosition": "0 0%,0 50%,0 100%",
   "backgroundSize": "100% 33.333333333333336%",
   "backgroundRepeat": "no-repeat"
