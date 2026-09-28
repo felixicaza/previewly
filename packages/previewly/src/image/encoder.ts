@@ -13,16 +13,17 @@ export function brightnessToNapiValue(brightness: number) {
   return Math.round((brightness - 1) * 255)
 }
 
-export async function encodePreview(pipeline: Transformer, format: ImageFormats): Promise<Buffer> {
+export function encodePreview(pipeline: Transformer, format: ImageFormats): Promise<Buffer> {
   switch (format) {
     case 'png':
       return pipeline.png()
-    case 'webp':
-      return pipeline.webp()
+    case 'jpeg':
+    case 'jpg':
+      return pipeline.jpeg()
     case 'avif':
       return pipeline.avif()
-    case 'jpeg':
+    case 'webp':
     default:
-      return pipeline.jpeg()
+      return pipeline.webp()
   }
 }

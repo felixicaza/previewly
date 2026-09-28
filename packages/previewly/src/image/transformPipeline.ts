@@ -1,35 +1,35 @@
-import type { GetPreviewlySrc, PipelineOptions } from '../types.ts'
+import type { Transformer } from '@napi-rs/image'
+import type { PipelineOptions } from '../types.ts'
 
-import { ResizeFilterType, ResizeFit, Transformer } from '@napi-rs/image'
+import { ResizeFit } from '@napi-rs/image'
 
 import { brightnessToNapiValue } from './encoder.ts'
 
-export function transformPipeline(src: GetPreviewlySrc, options: PipelineOptions) {
-  let pipeline = new Transformer(src)
+export function transformPipeline(pipeline: Transformer, options: PipelineOptions) {
+  let transformer = pipeline
 
   if (options.autoOrient) {
-    pipeline = pipeline.rotate()
+    transformer = transformer.rotate()
   }
 
-  pipeline = pipeline.resize({
+  transformer = transformer.fastResize({
     width: options.size,
     height: options.size,
-    filter: ResizeFilterType.Lanczos3,
     fit: ResizeFit.Inside
   })
 
   if (options.brightness !== 1) {
-    pipeline = pipeline.brighten(brightnessToNapiValue(options.brightness))
+    transformer = transformer.brighten(brightnessToNapiValue(options.brightness))
   }
 
   if (options.hue !== 0) {
-    pipeline = pipeline.huerotate(options.hue)
+    transformer = transformer.huerotate(options.hue)
   }
 
   if (options.saturation !== 1) {
     // Approximate fallback due to the lack of modulate(saturation)
-    pipeline = pipeline.adjustContrast((options.saturation - 1) * 20)
+    transformer = transformer.adjustContrast((options.saturation - 1) * 20)
   }
 
-  return pipeline
+  return transformer
 }

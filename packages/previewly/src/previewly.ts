@@ -20,34 +20,6 @@ function isValidSize(size: number) {
   return size >= SIZE_RANGE.min && size <= SIZE_RANGE.max
 }
 
-async function getMetadata(src: GetPreviewlySrc, getExif: boolean) {
-  const metadata = await new Transformer(src).metadata(getExif)
-  if (!metadata.width || !metadata.height) throw new Error('Could not get required image metadata')
-  return metadata
-}
-
-async function extractPixels(src: GetPreviewlySrc, options: PipelineOptions) {
-  const pipeline = transformPipeline(src, options)
-  const pixelMetadata = await pipeline.metadata()
-  const channels = getChannelsFromColorType(pixelMetadata.colorType)
-  const raw = await pipeline.rawPixels()
-
-  const pixels = getPixels({
-    data: raw,
-    width: pixelMetadata.width,
-    height: pixelMetadata.height,
-    channels,
-    removeAlpha: options.removeAlpha ?? false
-  })
-
-  return { pixelMetadata, pixels }
-}
-
-async function createPreview(src: GetPreviewlySrc, options: PipelineOptions, format: ImageFormats) {
-  const encoded = await encodePreview(transformPipeline(src, options), format)
-  return `data:${getMimeType(format)};base64,${encoded.toString('base64')}`
-}
-
 export async function getPreviewly(src: GetPreviewlySrc, options: GetPreviewlyOptions = {}): Promise<GetPreviewlyReturn> {
   const {
     autoOrient = false,
@@ -74,9 +46,22 @@ export async function getPreviewly(src: GetPreviewlySrc, options: GetPreviewlyOp
     removeAlpha
   }
 
-  const { pixelMetadata, pixels } = await extractPixels(src, pipelineOptions)
-  const base64 = await createPreview(src, pipelineOptions, format)
-  const metadata = await getMetadata(src, getExif)
+  const source = new Transformer(src)
+  const metadata = await source.metadata(getExif)
+  const pipeline = transformPipeline(source, pipelineOptions)
+  const pixelMetadata = await pipeline.metadata()
+  const raw = await pipeline.rawPixels()
+  const encoded = await encodePreview(pipeline, format)
+  const channels = getChannelsFromColorType(pixelMetadata.colorType)
+  const base64 = `data:${getMimeType(format)};base64,${encoded.toString('base64')}`
+
+  const pixels = getPixels({
+    data: raw,
+    width: pixelMetadata.width,
+    height: pixelMetadata.height,
+    channels,
+    removeAlpha
+  })
 
   return {
     base64,
